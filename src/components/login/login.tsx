@@ -78,7 +78,7 @@ export default function Login() {
           />
         ))}
       </div>
-      <FormAdditionalLinks />
+      {/* <FormAdditionalLinks /> */}
       <FormAction
         apiResponse={apiResponse}
         handleSubmit={handleSubmit}

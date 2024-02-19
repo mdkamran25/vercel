@@ -43,11 +43,11 @@ const ProfileModal = ({userName}:{userName:string|null|undefined}) => {
               <p className="font-semibold text-black pt-1">{userName}</p>
             </div>
 
-            <ul className="text-center">
+            {/* <ul className="text-center">
               <li className="px-4 pt-2 cursor-pointer pb-2 text-black hover:bg-gray-100">
                 Profile
               </li>
-            </ul>
+            </ul> */}
 
             <div className="border-t border-gray-200 pt-2 pb-4">
               <button
