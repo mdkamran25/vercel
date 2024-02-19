@@ -30,7 +30,7 @@ export default async function Dashboard() {
       <div className="w-screen px-3 md:px-8 mt-3 md:mt-5 flex flex-row">
         <DashboardHeader headerMessage={resData?.data?.name} />
         <div className="ms-auto">
-          <ProfileModal />
+          <ProfileModal userName={session?.user?.name} />
         </div>
       </div>
       <div className="w-screen pt-5 grid grid-cols-2 place-items-center md:flex flex-row justify-center">
