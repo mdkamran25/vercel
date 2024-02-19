@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.text-gradient{
+     background: linear-gradient(to right, #E3FF73, #E27C39);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.button{
+  @apply flex items-center justify-center text-lg font-bold text-gray-900 transition duration-300 ease-in ;
+}
+
+.square {
+ @apply flex h-[80px] w-[80px] sm:h-[90px] sm:w-[90px] md:h-[100px] md:w-[100px] items-center justify-center bg-[#1f3540] rounded-2xl shadow-md active:scale-125 transition duration-200 ease-in hover:bg-[#18272e] shadow-gray-400/30 ;
+}
+
+.board {
+ @apply mt-3 sm:mt-5 flex h-[350px] w-[350px] md:mt-20 md:h-[400px] md:w-[400px] flex-col items-center justify-center space-y-4 rounded-xl;
+}
+
+.board-row {
+ @apply flex items-center justify-center space-x-4;
+}
