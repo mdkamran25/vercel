@@ -1,6 +1,6 @@
-export const signup = "api/signup";
+export const signup = `${process.env.NEXT_PUBLIC_BASE_URL}/api/signup`;
 
-export const login = "api/login"
+export const login = `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`
 
 export const user = `${process.env.NEXT_PUBLIC_BASE_URL}/api/user`
 
