@@ -41,7 +41,7 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
       <DashboardCard>
         <div className="">
           <p className="text-xl font-semibold font-sans">
-            Oppoenent:{" "}
+            Opponent:{" "}
             <span className="text-xl font-medium font-sans">
               {checkOpponent(game, session?.user?.email as string)}
             </span>
