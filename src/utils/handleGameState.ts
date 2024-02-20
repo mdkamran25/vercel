@@ -7,12 +7,14 @@ export async function handleGameState(
   updatedBoard: string[],
   updatedTurn: string
 ) {
-  setGame({ ...game, board: updatedBoard, turn: updatedTurn });
+  setGame({ ...game, board: updatedBoard, turn: updatedTurn, status:true, winner:null });
   try {
     socket.emit("updateGame", {
       board: updatedBoard,
       turn: updatedTurn,
       roomCode: game.roomCode,
+      status:true,
+      winner:null
     });
 
     const res = await fetch(`${updateRoom}/${game?.roomCode}`, {
