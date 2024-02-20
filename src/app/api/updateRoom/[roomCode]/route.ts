@@ -5,10 +5,11 @@ import Game from "../../../../../models/gameModel";
 export async function PATCH(
   req: Request,
   { params }: { params: JoinRoomApiParams }
-) {
+): Promise<void | NextResponse> {
   const { roomCode } = params;
   const game = await req.json();
   await connectMongoDb();
+  
   try {
     const room = await Game.findOneAndUpdate(
       { roomCode },
@@ -19,7 +20,7 @@ export async function PATCH(
     return NextResponse.json({ message: "Game Updated", data: room, status: true }, { status: 200 });
     
   } catch (error) {
-    if (error instanceof Error)
+    if (error instanceof Error) {
       return NextResponse.json(
         {
           message: `Error while Joining Room: ${error.message} `,
@@ -27,6 +28,6 @@ export async function PATCH(
         },
         { status: 500 }
       );
+    }
   }
-  return null;
 }
