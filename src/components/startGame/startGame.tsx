@@ -7,7 +7,7 @@ import { joinRoom, room } from "@/constants/apiUrl";
 import { GameContext } from "@/context/gameContext";
 import ToastConainer from "../toastConainer";
 import { showErrorToast } from "../../utils/toast";
-import socket from "../../utils/socket"
+import socket from "../../utils/socket";
 
 const StartGame = ({ userData }: { userData: UserResponseData }) => {
   const { game, setGame } = useContext(GameContext) as GameContextType;
@@ -27,15 +27,15 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
 
   const createRoom = async () => {
     setLoading({ ...loading, createRoom: true });
-  
+
     try {
       const customRoomCode = Math.random().toString().substring(2, 8);
-  
+
       const newGame = {
         roomCode: customRoomCode,
         playerXId: userData.data._id,
       };
-  
+
       const res = await fetch(room, {
         method: "POST",
         headers: {
@@ -43,13 +43,13 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
         },
         body: JSON.stringify({ game: newGame }),
       });
-  
+
       const data = await res.json();
       if (res.ok) {
-        socket.emit("joinSocketChannel", customRoomCode)
+        socket.emit("joinSocketChannel", customRoomCode);
         router.push(`/room/${customRoomCode}`);
       } else {
-        showErrorToast(data.message);
+        showErrorToast(data.message, "error");
         setLoading({ ...loading, createRoom: false });
         throw new Error("Failed to create room");
       }
@@ -59,7 +59,7 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
         console.error("Error creating room:", error.message);
       }
     }
-  };  
+  };
 
   const handleJoinRoom = async () => {
     if (joinRoomCode && joinRoomCode.length === 6) {
@@ -83,12 +83,11 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
 
         const data = await res.json();
         if (!res.ok) {
-          showErrorToast(data.message);
+          showErrorToast(data.message,"error");
           setLoading({ ...loading, joinRoom: false });
           return;
         }
-        socket.emit("joinSocketChannel", joinRoomCode)
-
+        socket.emit("joinSocketChannel", joinRoomCode);
         socket.emit("joinGame", {
           status: true,
           playerOId: userData.data,

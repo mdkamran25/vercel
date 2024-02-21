@@ -1,18 +1,38 @@
 import PortalProvider from "@/components/portalProvider/portalProvider";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import closeIcon from "../../assets/cross.svg";
 import Image from "next/image";
 import Rematch from "@/components/rematch/rematch";
-
+import socket from "@/utils/socket";
+import { GameContext } from "@/context/gameContext";
+import { showErrorToast } from "@/utils/toast";
+import ToastConainer from "@/components/toastConainer";
 const ResultModal = ({ status }: { status: string }) => {
+  const [show, setShow] = useState<boolean>(true);
+  const {game} = useContext(GameContext) as GameContextType;
   const router = useRouter();
   const closeModal = () => {
+    socket.emit("leaveGame", {
+      roomCode: game.roomCode,
+      message: "Opponent left game",
+    });
     router.push("/");
+    setShow(false)
   };
 
+  useEffect(()=>{
+    socket.on("recieveLeaveGame", (data)=>{
+      showErrorToast(data, "error")
+    })
+    return () => {
+      socket.off("recieveLeaveGame");
+    };
+  },[])
+
+
   return (
-    <PortalProvider selector="resultModal" show={true}>
+    <PortalProvider selector="resultModal" show={show}>
       <div
         style={{
           position: "fixed",
@@ -40,6 +60,7 @@ const ResultModal = ({ status }: { status: string }) => {
           <Rematch />
         </div>
       </div>
+      <ToastConainer />
     </PortalProvider>
   );
 };

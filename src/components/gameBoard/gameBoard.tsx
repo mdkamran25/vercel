@@ -1,19 +1,19 @@
-'use client'
+"use client";
 import React, { useContext, useEffect } from "react";
 import Squares from "../squares/squares";
 import Turn from "../turn/turn";
 import { GameContext } from "@/context/gameContext";
 
+
 const GameBoard = ({ roomData }: { roomData: Game }) => {
   const { setGame } = useContext(GameContext) as GameContextType;
 
-  
-  useEffect(()=>{
+  useEffect(() => {
     setGame({
-      ...roomData
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[roomData])
+      ...roomData,
+    });
+  }, [roomData]);
+
 
   return (
     <div>

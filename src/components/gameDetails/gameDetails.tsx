@@ -18,6 +18,8 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
       const room = await fetch(`${getRoom}/${roomCode}`);
       const data = await room.json();
     
+      console.log("Join Game Socket", data)
+
       setGame({
         ...game,
         ...data.data
@@ -29,7 +31,6 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
     return () => {
       socket.off("recieveJoinGame", receiveGameHandler);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const status: string = useMemo(() => {

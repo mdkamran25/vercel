@@ -1,24 +1,41 @@
 "use client";
-import { FormEvent, useState } from "react";
-import Input from "../input/input";
-import { loginFields } from "@/constants/formFields";
-import FormAdditionalLinks from "../formAdditionalLinks/formAdditionalLinks";
+import { useState } from "react";
 import FormAction from "../formAction/formAction";
 import { SignInResponse, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const InputClass =
+  "rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm";
 
 interface LoginState {
   email: string;
   password: string;
 }
 
-const fields: LoginFields[] = loginFields;
+const schema = yup
+  .object()
+  .shape({
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email format"),
+    password: yup
+      .string()
+      .required("Password is required"),
+  })
+  .required();
 
 export default function Login() {
   const router = useRouter();
-  const [loginState, setLoginState] = useState<LoginState>({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginState>({
+    resolver: yupResolver(schema),
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,20 +43,13 @@ export default function Login() {
     status: "",
     message: "",
   });
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setLoginState({ ...loginState, [name]: value });
-  };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<LoginState> = async (data) => {
     try {
       setLoading(true);
       const res: SignInResponse | undefined = await signIn("credentials", {
-        email: loginState?.email,
-        password: loginState?.password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
       if (res?.error) {
@@ -61,27 +71,25 @@ export default function Login() {
   };
 
   return (
-    <form className="mt-8 px-4 sm:px-8 pb-5" onSubmit={handleSubmit}>
-      <div className="-space-y-px space-y-6">
-        {fields.map((field) => (
-          <Input
-            key={field.id}
-            handleChange={handleChange}
-            value={loginState[field.name as keyof LoginState]}
-            labelText={field.labelText}
-            labelFor={field.labelFor}
-            id={field.id}
-            name={field.name}
-            type={field.type}
-            isRequired={field.isRequired}
-            placeholder={field.placeholder}
-          />
-        ))}
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-8 px-4 sm:px-8 pb-5">
+      <div className="-space-y-px space-y-6 text-black">
+        <div className="my-5">
+          <label htmlFor="email" className="pb-1">
+            Email address
+          </label>
+          <input className={InputClass} {...register("email")} />
+          <p className="text-red-600">{errors.email?.message}</p>
+        </div>
+        <div className="my-5">
+          <label htmlFor="password" className="pb-1 ">
+            Password
+          </label>
+          <input type="password" className={InputClass} {...register("password")} />
+          <p className="text-red-600">{errors.password?.message}</p>
+        </div>
       </div>
-      {/* <FormAdditionalLinks /> */}
       <FormAction
         apiResponse={apiResponse}
-        handleSubmit={handleSubmit}
         text="Login"
         loading={loading}
       />
