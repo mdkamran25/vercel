@@ -10,7 +10,7 @@ export const checkTurn = (
     game.status &&
     game.board[i] === "" &&
     game.turn === "X" &&
-    (game.playerXId as UserData).email === session?.email
+    (game.playerXId as UserData)?.email === session?.email
   ) {
     return false;
   } else if (
@@ -18,7 +18,7 @@ export const checkTurn = (
     game.status &&
     game.board[i] === "" &&
     game.turn === "O" &&
-    (game.playerOId as UserData).email === session?.email
+    (game.playerOId as UserData)?.email === session?.email
   ) {
     return false;
   } else {

@@ -19,6 +19,8 @@ function Square({ value, i, session }: Props) {
   const { game, setGame } = useContext(GameContext) as GameContextType;
   
   useEffect(()=>{
+    socket.emit("joinSocketChannel", game.roomCode);
+
     socket.on("recieveUpdateGameData", (data) => {
 
       setGame({

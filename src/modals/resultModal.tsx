@@ -10,26 +10,26 @@ import { showErrorToast } from "@/utils/toast";
 import ToastConainer from "@/components/toastConainer";
 const ResultModal = ({ status }: { status: string }) => {
   const [show, setShow] = useState<boolean>(true);
-  const {game} = useContext(GameContext) as GameContextType;
+  const { game } = useContext(GameContext) as GameContextType;
   const router = useRouter();
   const closeModal = () => {
+    socket.emit("joinSocketChannel", game.roomCode);
     socket.emit("leaveGame", {
       roomCode: game.roomCode,
       message: "Opponent left game",
     });
     router.push("/");
-    setShow(false)
+    setShow(false);
   };
 
-  useEffect(()=>{
-    socket.on("recieveLeaveGame", (data)=>{
-      showErrorToast(data, "error")
-    })
+  useEffect(() => {
+    socket.on("recieveLeaveGame", (data) => {
+      showErrorToast(data, "error");
+    });
     return () => {
       socket.off("recieveLeaveGame");
     };
-  },[])
-
+  }, []);
 
   return (
     <PortalProvider selector="resultModal" show={show}>
