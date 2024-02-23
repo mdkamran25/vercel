@@ -96,7 +96,7 @@ interface Game {
   playerXId: UserData | string;
   turn: string;
   board: string[];
-  winner: string|null;
+  winner: string;
   status: boolean;
   leftGame: {
     playerX: boolean;
@@ -137,10 +137,6 @@ interface WindowSize {
 
 interface ResultSchema {
   gameStatus: string;
-  player: {
-    x: string | null;
-    o: string | null;
-  };
   winner: string | null;
 }
 
@@ -179,3 +175,9 @@ interface ClientSideSession {
   email?: string | null | undefined;
   image?: string | null | undefined;
 } 
+
+interface MatchDataWithOpponentName {
+  time: string;
+  winner: string | null;
+  opponentName: string;
+}

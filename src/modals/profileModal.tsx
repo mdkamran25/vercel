@@ -1,15 +1,25 @@
 "use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import profileImage from "../../assets/profileIcon.svg";
-import whiteBgProfileIcon from '../../assets/whiteBgProfileIcon.svg'
+import whiteBgProfileIcon from "../../assets/whiteBgProfileIcon.svg";
 import { signOut } from "next-auth/react";
 import PortalProvider from "../components/portalProvider/portalProvider";
+import { useRouter } from "next/navigation";
 
-
-const ProfileModal = ({userName}:{userName:string|null|undefined}) => {
+const ProfileModal = ({
+  userName,
+  userId,
+}: {
+  userName: string | null | undefined;
+  userId: string;
+}) => {
   const [openModal, setOpenModal] = useState(false);
-  
+  const router = useRouter();
+  const handleProfile = (): void => {
+    router.push(`/profile/${userId}`);
+  };
   return (
     <div className="relative">
       <button
@@ -43,11 +53,14 @@ const ProfileModal = ({userName}:{userName:string|null|undefined}) => {
               <p className="font-semibold text-black pt-1">{userName}</p>
             </div>
 
-            {/* <ul className="text-center">
-              <li className="px-4 pt-2 cursor-pointer pb-2 text-black hover:bg-gray-100">
+            <ul className="text-center">
+              <li
+                className="px-4 pt-2 cursor-pointer pb-2 text-black hover:bg-gray-100"
+                onClick={handleProfile}
+              >
                 Profile
               </li>
-            </ul> */}
+            </ul>
 
             <div className="border-t border-gray-200 pt-2 pb-4">
               <button

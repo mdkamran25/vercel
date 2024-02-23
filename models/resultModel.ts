@@ -5,6 +5,16 @@ interface Result extends Document, ResultSchema {
     type: typeof Schema.Types.ObjectId;
     ref: string;
   };
+  player: {
+    x: {
+      type: typeof Schema.Types.ObjectId | null;
+      ref: string;
+    };
+    o: {
+      type: typeof Schema.Types.ObjectId | null;
+      ref: string;
+    };
+  };
 }
 
 const ResultSchema: Schema<Result> = new Schema<Result>(
@@ -18,8 +28,8 @@ const ResultSchema: Schema<Result> = new Schema<Result>(
       default: null,
     },
     player: {
-      x: { type: String, default: null },
-      o: { type: String, default: null },
+      x: { type: Schema.Types.ObjectId, ref: "User", default: null },
+      o: { type: Schema.Types.ObjectId, ref: "User", default: null },
     },
     winner: {
       type: String,
@@ -31,6 +41,6 @@ const ResultSchema: Schema<Result> = new Schema<Result>(
   }
 );
 
-const ResultModel=
+const ResultModel =
   mongoose.models.Result || mongoose.model<Result>("Result", ResultSchema);
 export default ResultModel;

@@ -15,3 +15,5 @@ export const updateRoom = `${process.env.NEXT_PUBLIC_BASE_URL}/api/updateRoom`
 export const createResult = `${process.env.NEXT_PUBLIC_BASE_URL}/api/createResult`
 
 export const getResult = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getResult`
+
+export const getProfileResult = `${process.env.NEXT_PUBLIC_BASE_URL}/api/getProfileResult`
