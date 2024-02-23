@@ -96,7 +96,7 @@ interface Game {
   playerXId: UserData | string;
   turn: string;
   board: string[];
-  winner: string;
+  winner: string|null;
   status: boolean;
   leftGame: {
     playerX: boolean;
