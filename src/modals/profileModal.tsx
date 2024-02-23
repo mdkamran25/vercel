@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import profileImage from "../../assets/profileIcon.svg";
@@ -16,10 +15,13 @@ const ProfileModal = ({
   userId: string;
 }) => {
   const [openModal, setOpenModal] = useState(false);
+  
   const router = useRouter();
+
   const handleProfile = (): void => {
     router.push(`/profile/${userId}`);
   };
+
   return (
     <div className="relative">
       <button

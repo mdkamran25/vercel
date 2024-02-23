@@ -11,7 +11,7 @@ const Room = async ({ params }: { params: { roomCode: string } }) => {
   const session: Session | null = await getServerSession();
   const { roomCode } = params;
   if (!session) {
-    redirect("/");
+    redirect("/login");
   }
 
   const room = await fetch(`${getRoom}/${roomCode}`);
