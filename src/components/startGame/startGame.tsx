@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LoadingButton from "../loadingButton/loadingButton";
 import Input from "../input/input";
 import { joinRoom, room } from "@/constants/apiUrl";
@@ -24,6 +24,10 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
     setJoinRoomCode(e.target.value);
   };
   const router = useRouter();
+
+  useEffect(() => {
+    socket.emit("renderIssue");
+  }, []);
 
   const createRoom = async () => {
     setLoading({ ...loading, createRoom: true });
