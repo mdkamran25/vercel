@@ -18,8 +18,8 @@ const ResultModal = ({ status }: { status: string }) => {
       roomCode: game.roomCode,
       message: "Opponent left game",
     });
-    router.push("/");
     setShow(false);
+    router.push("/");
   };
 
   useEffect(() => {

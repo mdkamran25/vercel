@@ -12,7 +12,7 @@ interface PaginationProps {
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   
     return (
-      <nav className="flex justify-center mt-4">
+      <nav className="flex justify-center my-4 ">
         <ul className="flex space-x-2">
           <li>
             <button

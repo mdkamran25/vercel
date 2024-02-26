@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import connectMongoDb from "../../../../utils/dbConnection";
 import Result from "../../../../../models/resultModel";
+import ResultModel from "../../../../../models/resultModel";
+import mongoose from "mongoose";
 
 export async function GET(
   _req: Request,
@@ -14,7 +16,7 @@ export async function GET(
     const aggregationPipeline = [
       {
         $match: {
-          $or: [{ "player.x": userId }, { "player.o": userId }],
+          $or: [{ "player.x": new mongoose.Types.ObjectId(userId) }, { "player.o": new mongoose.Types.ObjectId(userId) }],
         },
       },
       {
@@ -68,7 +70,7 @@ export async function GET(
       },
     ];
 
-    const resultAggregation = await Result.aggregate(aggregationPipeline);
+    const resultAggregation = await ResultModel.aggregate(aggregationPipeline);
     const aggregatedResult = resultAggregation[0];
 
     if (!aggregatedResult) {

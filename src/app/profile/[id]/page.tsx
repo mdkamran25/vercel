@@ -5,6 +5,7 @@ import { Session, getServerSession } from "next-auth";
 import Table from "@/components/table/table";
 import { redirect } from "next/navigation";
 
+
 const ProfilePage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
@@ -31,7 +32,9 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
           />
         </div>
       </div>
-      <div className="w-[100vw] flex justify-center items-center h-[100%]">
+      
+      <div className="w-[100vw] mb-3 flex flex-col justify-center items-center">
+      
         <Table result={resultData} />
       </div>
     </div>

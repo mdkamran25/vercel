@@ -8,21 +8,31 @@ import { useSession } from "next-auth/react";
 import ReactConfetti from "@/modals/react-confetti";
 import { getRoom } from "@/constants/apiUrl";
 import socket from "@/utils/socket";
+import Link from "next/link";
+import { showErrorToast } from "@/utils/toast";
+import ToastConainer from "../toastConainer";
 
 const GameDetails = ({ roomCode }: { roomCode: string }) => {
   const { data: session } = useSession();
   const { game, setGame } = useContext(GameContext) as GameContextType;
 
+  const handleLeaveGame = (): void => {
+    console.log("Leave Game");
+    socket.emit("joinSocketChannel", game.roomCode);
+    socket.emit("leaveGame", {
+      roomCode: game.roomCode,
+      message: "Opponent left game",
+    });
+  };
+
   useEffect(() => {
     const receiveGameHandler = async () => {
       const room = await fetch(`${getRoom}/${roomCode}`);
       const data = await room.json();
-    
-      console.log("Join Game Socket", data)
 
       setGame({
         ...game,
-        ...data.data
+        ...data.data,
       });
     };
 
@@ -30,6 +40,15 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
 
     return () => {
       socket.off("recieveJoinGame", receiveGameHandler);
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("recieveLeaveGame", (data) => {
+      showErrorToast(data, "error");
+    });
+    return () => {
+      socket.off("recieveLeaveGame");
     };
   }, []);
 
@@ -66,8 +85,18 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
             Game Status:{" "}
             <span className="text-xl font-medium font-sans">{status}</span>
           </p>
+          <p className="my-2 text-center">
+            <Link
+              onClick={handleLeaveGame}
+              href="/"
+              className="bg-purple-700 p-2 rounded-xl text-md font-semibold font-sans hover:cursor-pointer"
+            >
+              Leave Game
+            </Link>
+          </p>
         </div>
       </DashboardCard>
+      <ToastConainer />
       {(status === "You Won" ||
         status === "You Lose" ||
         status === "Match Draw") && <ReactConfetti status={status} />}
