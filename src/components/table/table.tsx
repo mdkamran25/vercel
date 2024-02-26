@@ -2,9 +2,24 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import sortArrow from "../../../assets/sortArrow.svg";
+import Pagination from "../pagination/pagination";
 
 const Table = ({ result }: { result: any }) => {
   const [sortConfig, setSortConfig] = useState<{ key: string; direction: string }>({ key: "", direction: "" });
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const itemsPerPage = 10;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = result?.matchData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const sortBy = (key: string) => {
     let direction = "ascending";
@@ -14,9 +29,9 @@ const Table = ({ result }: { result: any }) => {
     setSortConfig({ key, direction });
   };
 
-  let sortedData = [...result];
+  let sortedData = [...currentItems];
   if (sortConfig.key) {
-    sortedData = [...result].sort((a, b) => {
+    sortedData = [...currentItems].sort((a, b) => {
       if (sortConfig.direction === "ascending") {
         return a[sortConfig.key].localeCompare(b[sortConfig.key]);
       } else {
@@ -37,7 +52,7 @@ const Table = ({ result }: { result: any }) => {
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <div className="flex gap-1 items-center hover:cursor-pointer" onClick={() => sortBy("opponentName")}>
-                    Player Name
+                    Opponent Name
                     <Image
                       src={sortArrow}
                       width={14}
@@ -71,7 +86,7 @@ const Table = ({ result }: { result: any }) => {
                     key={index}
                     className="border-b text-white transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
                   >
-                    <td className="whitespace-nowrap px-6 py-4 font-medium">{index}</td>
+                    <td className="whitespace-nowrap px-6 py-4 font-medium">{((currentPage - 1) * 10)+ index }</td>
                     <td className="whitespace-nowrap px-6 py-4">{element?.opponentName}</td>
                     <td className="whitespace-nowrap px-6 py-4">{element?.winner}</td>
                     <td className="whitespace-nowrap px-6 py-4">{new Date(element.time).toLocaleDateString('en-GB')}</td>
@@ -82,6 +97,11 @@ const Table = ({ result }: { result: any }) => {
           </table>
         </div>
       </div>
+      <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(result?.matchData.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+        />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import ProfileModal from "@/modals/profileModal";
 import { Session, getServerSession } from "next-auth";
 import Table from "@/components/table/table";
 import { redirect } from "next/navigation";
+
 const ProfilePage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
@@ -31,8 +32,7 @@ const ProfilePage = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
       <div className="w-[100vw] flex justify-center items-center h-[100%]">
-        <Table result={resultData?.matchData} />
-        
+        <Table result={resultData} />
       </div>
     </div>
   );
