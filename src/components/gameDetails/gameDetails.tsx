@@ -17,7 +17,6 @@ const GameDetails = ({ roomCode }: { roomCode: string }) => {
   const { game, setGame } = useContext(GameContext) as GameContextType;
 
   const handleLeaveGame = (): void => {
-    console.log("Leave Game");
     socket.emit("joinSocketChannel", game.roomCode);
     socket.emit("leaveGame", {
       roomCode: game.roomCode,

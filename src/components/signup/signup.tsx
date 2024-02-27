@@ -81,7 +81,7 @@ const Signup = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         setLoading(false);
-        console.error("Error creating account:", error?.message);
+        // console.error("Error creating account:", error?.message);
       }
     }
   };

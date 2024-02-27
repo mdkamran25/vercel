@@ -55,22 +55,6 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // async jwt({ token, user }:{token: Partial<Token>, user:Partial<UserData>}) {
-    //   if (user) {
-    //     token.name = user.name;
-    //     token.email = user.email;
-    //     token.id = user._id;
-    //   }
-    //   return token;
-    // },
-    // async session({ session, token }: {session:CallbacksSession, token:Partial<Token>}) {
-    //   console.log({session}, {token})
-    //   if (token) {
-    //     session.user.name = token.name;
-    //     session.user.email = token.email;
-    //     session.id = token._id;
-    //   }
-    //   return session;
-    // },
+    
   },
 };

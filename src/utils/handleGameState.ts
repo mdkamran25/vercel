@@ -39,12 +39,12 @@ export async function handleGameState(
     });
 
     if (!res.ok) {
-      console.error("Failed to update game state in API:", res.status);
+      // console.error("Failed to update game state in API:", res.status);
       return;
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error("Error handling game state:", error?.message);
+      // console.error("Error handling game state:", error?.message);
     }
   }
 }

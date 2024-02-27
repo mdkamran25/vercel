@@ -62,7 +62,7 @@ export default function Login() {
     } catch (error) {
       setLoading(false);
       if (error instanceof Error) {
-        console.error("something went wrong: ", error.message);
+        // console.error("something went wrong: ", error.message);
       }
 
       return null;
