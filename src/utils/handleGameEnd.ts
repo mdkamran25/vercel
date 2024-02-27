@@ -35,11 +35,11 @@ export async function handleGameEnd(
       }),
     });
     if (!res.ok) {
-      // console.error("Failed to update game state in API:", res.status);
+      console.error("Failed to update game state in API:", res.status);
     }
   } catch (error) {
     if (error instanceof Error) {
-      // console.error("Error updating game state in API:", error.message);
+      console.error("Error updating game state in API:", error.message);
     }
   }
 
@@ -66,7 +66,7 @@ export async function handleGameEnd(
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      // console.error("Error adding result: ", error?.message);
+      console.error("Error adding result: ", error?.message);
     }
   }
 }

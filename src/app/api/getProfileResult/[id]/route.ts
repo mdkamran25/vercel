@@ -57,7 +57,7 @@ export async function GET(
 
     return NextResponse.json({ matchData: matchDataWithOpponentName });
   } catch (error) {
-    // console.error("Error retrieving match data:", error);
+    console.error("Error retrieving match data:", error);
     return NextResponse.error();
   }
 }

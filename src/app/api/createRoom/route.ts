@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     if (error instanceof Error) {
-      // console.error("Error while creating Room:", error.message);
+      console.error("Error while creating Room:", error.message);
       return NextResponse.json(
         {
           message: `Error while creating Room: ${error.message}`,

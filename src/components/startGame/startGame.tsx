@@ -60,7 +60,7 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
     } catch (error) {
       setLoading({ ...loading, createRoom: false });
       if (error instanceof Error) {
-        // console.error("Error creating room:", error.message);
+        console.error("Error creating room:", error.message);
       }
     }
   };
@@ -101,7 +101,7 @@ const StartGame = ({ userData }: { userData: UserResponseData }) => {
       } catch (error) {
         setLoading({ ...loading, joinRoom: false });
         if (error instanceof Error) {
-          // console.error(error.message);
+          console.error(error.message);
         }
       }
     }
