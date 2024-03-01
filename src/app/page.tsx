@@ -14,9 +14,9 @@ import ProfileModal from "@/modals/profileModal";
 export default async function Dashboard() {
   const session: Session | null = await getServerSession();
 
-  if (!session) {
-    redirect("/login");
-  }
+  // if (!session) {
+  //   redirect("/login");
+  // }
 
   const res = await fetch(`${user}/${session?.user?.email}`);
   const resData = (await res.json()) as UserResponseData;

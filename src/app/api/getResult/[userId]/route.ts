@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import connectMongoDb from "../../../../utils/dbConnection";
-import Result from "../../../../../models/resultModel";
 import ResultModel from "../../../../../models/resultModel";
 import mongoose from "mongoose";
 
@@ -13,11 +12,16 @@ export async function GET(
   try {
     await connectMongoDb();
 
+    const orCondition = {
+      $or: [
+        { "player.x": new mongoose.Types.ObjectId(userId) },
+        { "player.o": new mongoose.Types.ObjectId(userId) }
+      ]
+    };
+
     const aggregationPipeline = [
       {
-        $match: {
-          $or: [{ "player.x": new mongoose.Types.ObjectId(userId) }, { "player.o": new mongoose.Types.ObjectId(userId) }],
-        },
+        $match: orCondition
       },
       {
         $group: {
@@ -28,13 +32,21 @@ export async function GET(
               $cond: [
                 { $eq: ["$winner", "X"] },
                 {
-                  $cond: [{ $eq: ["$player.x", userId] }, 1, 0],
+                  $cond: [
+                    { $eq: ["$player.x", new mongoose.Types.ObjectId(userId)] },
+                    1,
+                    0
+                  ],
                 },
                 {
                   $cond: [
                     { $eq: ["$winner", "O"] },
                     {
-                      $cond: [{ $eq: ["$player.o", userId] }, 1, 0],
+                      $cond: [
+                        { $eq: ["$player.o", new mongoose.Types.ObjectId(userId)] },
+                        1,
+                        0
+                      ],
                     },
                     0,
                   ],
@@ -47,13 +59,21 @@ export async function GET(
               $cond: [
                 { $eq: ["$winner", "X"] },
                 {
-                  $cond: [{ $eq: ["$player.x", userId] }, 0, 1],
+                  $cond: [
+                    { $eq: ["$player.x", new mongoose.Types.ObjectId(userId)] },
+                    0,
+                    1
+                  ],
                 },
                 {
                   $cond: [
                     { $eq: ["$winner", "O"] },
                     {
-                      $cond: [{ $eq: ["$player.o", userId] }, 0, 1],
+                      $cond: [
+                        { $eq: ["$player.o", new mongoose.Types.ObjectId(userId)] },
+                        0,
+                        1
+                      ],
                     },
                     0,
                   ],
@@ -63,7 +83,11 @@ export async function GET(
           },
           totalDraws: {
             $sum: {
-              $cond: [{ $eq: ["$winner", "Match Draw"] }, 1, 0],
+              $cond: [
+                { $eq: ["$winner", "Match Draw"] },
+                1,
+                0
+              ],
             },
           },
         },
@@ -71,6 +95,7 @@ export async function GET(
     ];
 
     const resultAggregation = await ResultModel.aggregate(aggregationPipeline);
+
     const aggregatedResult = resultAggregation[0];
 
     if (!aggregatedResult) {
@@ -89,6 +114,7 @@ export async function GET(
         { status: 200 }
       );
     }
+
     return NextResponse.json(
       {
         message: "Results found",
